@@ -40,7 +40,7 @@ customer_payments as (
 
     select
         orders.customer_id,
-        sum(amount) as total_amount
+        sum(payment_amount) as total_amount
 
     from payments
     left join orders using (order_id)
@@ -53,8 +53,8 @@ final as (
 
     select
         customers.customer_id,
-        customers.first_name,
-        customers.last_name,
+        customers.customer_first_name,
+        customers.customer_last_name,
         customer_orders.first_order,
         customer_orders.most_recent_order,
         customer_orders.number_of_orders,

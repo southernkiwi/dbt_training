@@ -1,24 +1,26 @@
-with source as (
-    
-   select
-       id as payment_id,
-       orderid as order_id,
-       paymentmethod as payment_method,
-       status,
-       -- amount is stored in cents, convert it to dollars
-       {{ cents_to_dollars('amount', 4) }} as amount,
-       created as created_at
+with 
 
-   from {{ source('stripe','payment') }}
+source as (
+
+    select * from {{ source('stripe', 'payment') }}
 
 ),
 
-renamed as (
+transformed as (
 
-    select *
-    from source
+  select
+
+    id as payment_id,
+    orderid as order_id,
+    created as payment_created_at,
+    status as payment_status,
+       -- amount is stored in cents, convert it to dollars
+    {{ cents_to_dollars('amount', 4) }} as payment_amount,
+    created as created_at
+
+   from source
 
 )
 
-select * from renamed
+select * from transformed
 

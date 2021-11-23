@@ -1,23 +1,27 @@
-with source as (
+with 
 
-    {#-
-    Normally we would select from the table here, but we are using seeds to load
-    our data in this project
-    #}
+source as (
+
     select * from {{ source('jaffle_shop', 'orders') }}
 
 ),
 
-renamed as (
+transformed as (
 
-    select
-        id as order_id,
-        user_id as customer_id,
-        order_date,
-        status as order_status
+  select
 
-    from source
+    id as order_id,
+    user_id as customer_id,
+    order_date, -- as order_placed_at,
+    status as order_status,
+
+    case 
+        when status not in ('returned','return_pending') 
+        then order_date 
+    end as valid_order_date
+
+  from source
 
 )
 
-select * from renamed
+select * from transformed
