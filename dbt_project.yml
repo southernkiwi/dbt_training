@@ -36,5 +36,13 @@ models:
    dbt_training:
       staging:
          materialized: view
-      marts:
+         +tags: "staging"
+
+      intermediate:
+         materialized: view
+         +tags: "intermediate"
+
+      core:
          materialized: table
+         +tags: "final"
+

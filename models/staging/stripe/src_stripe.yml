@@ -17,4 +17,10 @@ sources:
             tests:
               - accepted_values:
                   values: ['credit_card', 'coupon', 'bank_transfer', 'gift_card']
+          - name: order_id
+            description: Foreign key to stg_orderss.order_id.
+            tests:
+              - relationships:
+                  to: ref('stg_orders')
+                  field: order_id
             
